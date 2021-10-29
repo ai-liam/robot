@@ -1,0 +1,14 @@
+numpy==1.20.0 
+pyaudio 
+Pillow
+opencv-python
+cython
+matplotlib
+speechbrain
+datasets
+transformers
+soundfile
+librosa
+torch
+torchvision
+pyttsx3

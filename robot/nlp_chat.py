@@ -22,7 +22,7 @@ class NLPChat:
         bot_input_ids = new_user_input_ids
         #bot_input_ids = torch.cat([history_ids, new_user_input_ids], dim=-1) if len(history_ids) > 0 else new_user_input_ids
         #print('bot_input_ids:',bot_input_ids)
-        chat_history_ids = self.model.generate(bot_input_ids, max_length=1000, pad_token_id=self.tokenizer.eos_token_id)
+        chat_history_ids = self.model.generate(bot_input_ids, max_length=100, pad_token_id=self.tokenizer.eos_token_id)
         #print('chat_history_ids:',chat_history_ids)
 
         #print("1 DialoGPT: {}".format(tokenizer.decode(chat_history_ids[0], skip_special_tokens=True)))

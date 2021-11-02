@@ -19,6 +19,7 @@ target/
 **/external-libraries
 **/.cache
 **/temp
+data/**/cache
 
 pretrained_model_checkpoints
 

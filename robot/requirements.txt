@@ -12,3 +12,4 @@ librosa
 torch
 torchvision
 pyttsx3
+espnet_model_zoo

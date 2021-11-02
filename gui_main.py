@@ -19,7 +19,7 @@ import robot.speaker_main as sp
 
 audio_file = "data/speaker/temp/recoder1.wav"
 audio_file_ck = "data/speaker/temp/ck_master.wav"
-
+audio_file_tts = "data/speaker/temp/tts_master.wav"
 
 # tts = AudioTTS()
 
@@ -109,8 +109,7 @@ class Application(tk.Frame):
         print(text)
 
     def play(self, file):
-        self.show_plt(file)
-
+        # self.show_plt(file)
         def __play():
             pygame.mixer.music.load(file)
             pygame.mixer.music.play(loops=0)
@@ -130,10 +129,16 @@ class Application(tk.Frame):
         ts1, question, answer = sp.chat_dialog(txt)
         self.var_out.set(f"[输出信息]：{answer}")
         self.log(f'[Chat] {answer}')
+        self.log(f"[TTS保存]：{answer}")
+        sp.tts_wav(answer,audio_file_tts)
+        time.sleep(0.01)
+        self.log(f"[TTS播放]：{answer}")
+        pygame.mixer.music.load(audio_file_tts)
+        pygame.mixer.music.play(loops=0)
 
     def click_test(self):
         # tts_say("主人，今天天气很好，适合和朋友出去玩！")
-        self.play(audio_file_ck)
+        self.play(audio_file_tts)
 
     def click_recode_new(self):
         self.log("[声纹]新录入声纹；")

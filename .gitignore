@@ -19,7 +19,10 @@ target/
 **/external-libraries
 **/.cache
 **/temp
+
 pretrained_model_checkpoints
 
 ./*.wav
 ./*.mp3
+
+ts_**.ipynb

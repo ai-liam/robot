@@ -3,7 +3,8 @@
 
 # 语音播报模块
 import pyttsx3 
- 
+import time 
+
 class AudioTTS:
     def __init__(self ):
         # 模块初始化
@@ -16,8 +17,14 @@ class AudioTTS:
         self.engine.say(text)
         # 等待语音播报完毕 
         self.engine.runAndWait()
-        #engine1.stop()
+        #self.engine.stop()
+        time.sleep(1)
         
+    def speak(self,text="你好"):
+        print('准备开始语音播报...2')
+        self.engine.speak(text)
+        time.sleep(1)
+
     def save(self,text="你好",file_dir="temp.mp3"):
         print('准备开始语音保存...')
         #engine.say(text)

@@ -37,6 +37,9 @@ class Recoder:
         # wf.writeframes(self.save_buffer.decode())
         wf.close() 
 
+    def buffer(self):
+        return np.array(self.save_buffer)
+
     def loops(self):
         # print time_count
         # 读入NUM_SAMPLES个取样

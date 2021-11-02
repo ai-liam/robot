@@ -3,13 +3,20 @@ import sys,os
 sys.path.append('./data/speaker/external-libraries')
 
 import tkinter as tk
-#from tkinter import *
 from PIL import Image, ImageTk
-#import pygame
+import pygame
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,NavigationToolbar2Tk)
+from speechbrain.dataio.dataio import read_audio
+import threading
 
+#self
 from robot.recode import Recoder # self
+#from robot.audio_tts import AudioTTS
 
 audio_file = "data/speaker/temp/recoder1.wav"
+
+#tts = AudioTTS()
 
 class Application(tk.Frame):
     def __init__(self, master=None,width=800,height=600):
@@ -22,7 +29,10 @@ class Application(tk.Frame):
         self.widgets_pack()
         # ai
         self.recoder = Recoder()
-        #pygame.mixer.init()# initialise the pygame
+        
+        #self.show_plt()
+        pygame.mixer.init()# initialise the pygame
+        #self.tts = AudioTTS()
 
     def create_widgets(self):
         self.canvas = tk.Canvas(self, height=200, width=500)
@@ -47,27 +57,85 @@ class Application(tk.Frame):
         self.button_recode_play.pack()
         self.label_info.pack()
 
+    def play(self,file):
+        # self.show_plt()
+        # def __play():
+        #     pygame.mixer.music.load(file)
+        #     pygame.mixer.music.play(loops=0)
+        # T = threading.Thread(target=__play)
+        # T.start()
+        self.tts_say("主人，今天天气很好，适合和朋友出去玩！")
+
+    def tts_say(self,text):
+        def __say():
+            try:
+                from robot.audio_tts import AudioTTS
+                tts = AudioTTS()
+                tts.say(text)
+            except:
+                pass
+        try:
+            T = threading.Thread(target=__say,daemon=True)
+            T.start()
+        except:
+                pass   
+
+    def __recode_start(self):
+        self.recoder.recode(100)# 声音长度
+
     def recode_start(self):
         print("Start recode")
         self.var.set('Start recode')
+        T = threading.Thread(target=self.__recode_start)
+        T.start()
         # 录音：今天天气怎么样？
-        self.recoder.recode(60)# 声音长度
+        #self.recoder.recode(60)# 声音长度
 
     def recode_play(self):
         print("Play")
-        # pygame.mixer.music.load("audio_file")
-        # pygame.mixer.music.play(loops=0)
+        self.play(audio_file)
 
     def recode_stop(self):
         print("Stop recode")
+        self.recoder.stop()
         self.var.set('Stop recode')
         self.recoder.save(audio_file)
+
+    def show_plt(self):
+        # the figure that will contain the plot
+        fig = Figure(figsize=(5, 5),
+                    dpi=100)
+        # list of squares
+        #y = [i ** 2 for i in range(101)]
+        # adding the subplot
+        plot1 = fig.add_subplot(211) # 111
+        # 原始音频
+        clean = read_audio(audio_file).squeeze()
+        # plotting the graph :
+        plot1.plot(clean) #数值 #plot1.plot(y)
+
+        plot2 = fig.add_subplot(212)
+        plot2.specgram(clean,Fs=16000)# specgram()函数用于绘制频谱图。
+        #plot2.xlabel('Time')
+        #plot2.ylabel('Frequency')
+
+        # creating the Tkinter canvas
+        # containing the Matplotlib figure
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.draw()
+        # placing the canvas on the Tkinter window
+        canvas.get_tk_widget().pack()
+        # creating the Matplotlib toolbar
+        toolbar = NavigationToolbar2Tk(canvas,self)
+        toolbar.update()
+        # placing the toolbar on the Tkinter window
+        canvas.get_tk_widget().pack()
 
 
 app = Application()
 # 设置窗口
 app.master.title('虚拟人1号（Virtual Human No. 1）')
-app.master.geometry('800x600')
+app.master.geometry('800x800')
 
 # 主消息循环:
 app.mainloop()

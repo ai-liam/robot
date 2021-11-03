@@ -23,7 +23,7 @@ data/**/cache
 
 pretrained_model_checkpoints
 
-./*.wav
-./*.mp3
+*.wav
+*.mp3
 
 ts_**.ipynb

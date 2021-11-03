@@ -100,11 +100,13 @@ class Application(tk.Frame):
         self.log("[AI]启动AI大脑，分析录音")
         ck = sp.check_activity(file, min_num=min_num)
         if not ck:
-            self.var_in.set("[输入信息]：无效！")
+            self.log("[声音状态]: 无效")
             return
         self.log(f'[声音状态]{ck}')
         txt = sp.asr_get_text(file)
         self.log(f'[ASR]转换文字为 {txt}')
+        if txt == "":
+            return
         self.var_in.set(f"[输入信息]：{txt}")
         ts1, question, answer = sp.chat_dialog(txt)
         self.var_out.set(f"[输出信息]：{answer}")

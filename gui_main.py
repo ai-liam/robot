@@ -148,7 +148,7 @@ class Application(tk.Frame):
             while self.flag_auto_chat:
                 time.sleep(0.1)
                 self.auto_chat(80, audio_file_auto_chat)
-                time.sleep(0.1)
+                time.sleep(0.9)
 
         threading.Thread(target=__thread).start()
 
